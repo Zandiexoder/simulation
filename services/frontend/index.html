@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Strategic Simulation Operations Console</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    <header class="topbar">
+      <div class="title-block">
+        <div class="title">STRATEGIC SOCIETY OPERATIONS</div>
+        <div class="subtitle">Map-centric intelligence and stability monitoring console</div>
+      </div>
+      <div class="status-cluster" id="statusCluster"></div>
+      <div class="control-cluster">
+        <button class="btn primary" onclick="uiAction('start')">Resume</button>
+        <button class="btn" onclick="uiAction('pause')">Pause</button>
+        <button class="btn" onclick="uiAction('step')">Step</button>
+        <button class="btn" onclick="uiAction('speed')">Speed x4</button>
+        <button class="btn warn" onclick="uiAction('replayOn')">Replay on</button>
+        <button class="btn" onclick="uiAction('replayOff')">Replay off</button>
+        <button class="btn ghost" onclick="uiAction('dock')">Dock</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <aside class="rail">
+        <div class="rail-group">
+          <div class="rail-label">Modes</div>
+          <button class="rail-btn active" title="World">🌐</button>
+          <button class="rail-btn" title="Nations">🏛️</button>
+          <button class="rail-btn" title="Cities">🏙️</button>
+          <button class="rail-btn" title="Agents">👤</button>
+          <button class="rail-btn" title="Economy">💹</button>
+        </div>
+        <div class="rail-group">
+          <div class="rail-label">Overlays</div>
+          <button class="rail-btn" title="Intelligence">🛰️</button>
+          <button class="rail-btn" title="Conflict">🛡️</button>
+          <button class="rail-btn" title="Timeline">🕒</button>
+          <button class="rail-btn" title="GM">🧠</button>
+        </div>
+      </aside>
+
+      <section class="map-zone">
+        <div class="map-toolbar">
+          <select id="overlaySelect">
+            <option value="terrain">terrain</option>
+            <option value="population">population density</option>
+            <option value="migration">migration corridors</option>
+            <option value="trade">trade corridors</option>
+            <option value="legitimacy">legitimacy</option>
+            <option value="intel">intelligence confidence</option>
+            <option value="conflict">conflict risk</option>
+            <option value="climate">climate stress</option>
+            <option value="resources">resource richness</option>
+            <option value="urban">urban growth pressure</option>
+          </select>
+          <button class="btn" onclick="uiAction('step')">refresh tick</button>
+        </div>
+        <div class="map-canvas" id="mapCanvas"></div>
+        <div class="map-legend" id="mapLegend"></div>
+      </section>
+
+      <aside class="inspector">
+        <div class="inspector-head"><b>Intelligence Inspector</b></div>
+        <div class="inspector-tabs">
+          <button class="btn" data-inspector="world">World</button>
+          <button class="btn" data-inspector="nation">Nation</button>
+          <button class="btn" data-inspector="city">City</button>
+          <button class="btn" data-inspector="agent">Agent</button>
+        </div>
+        <div class="inspector-body" id="inspectorBody"><div class="skeleton">Loading inspector…</div></div>
+      </aside>
+    </main>
+
+    <section class="dock">
+      <div class="dock-tabs">
+        <button class="btn dock-tab active" data-tab="events">Events</button>
+        <button class="btn dock-tab" data-tab="alerts">Alerts</button>
+        <button class="btn dock-tab" data-tab="metrics">Metrics</button>
+        <button class="btn dock-tab" data-tab="intel">Intel</button>
+        <button class="btn dock-tab" data-tab="timeline">Timeline</button>
+        <button class="btn dock-tab" data-tab="conflict">Conflict</button>
+        <button class="btn dock-tab" data-tab="gm">GM Briefings</button>
+        <div class="notice info">Operator dock: click tabs for focused views</div>
+      </div>
+      <div class="dock-content" id="dockContent">
+        <div class="skeleton">Loading operational feed…</div>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
