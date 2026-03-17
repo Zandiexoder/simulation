@@ -1,0 +1,32 @@
+# Repository Tree
+
+- `/docs`
+- `/services`
+  - `/api`
+  - `/gm-gateway`
+  - `/naming`
+  - `/frontend`
+- `/sim`
+  - `/kernel`
+  - `/worldgen`
+  - `/agents`
+  - `/households`
+  - `/economy`
+  - `/social`
+  - `/information`
+  - `/migration`
+  - `/urban`
+  - `/politics`
+  - `/intelligence`
+  - `/international`
+  - `/media`
+  - `/conflict`
+  - `/history`
+  - `/scheduler`
+  - `/bend-core`
+- `/shared`
+  - `/contracts`
+  - `/config`
+  - `/clients`
+- `/scripts`
+- `/tests`
