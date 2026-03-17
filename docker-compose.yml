@@ -1,0 +1,37 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    env_file: .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - gm-gateway
+      - naming
+
+  gm-gateway:
+    build:
+      context: .
+      dockerfile: services/gm-gateway/Dockerfile
+    env_file: .env
+    ports:
+      - "8010:8010"
+
+  naming:
+    build:
+      context: .
+      dockerfile: services/naming/Dockerfile
+    env_file: .env
+    ports:
+      - "8020:8020"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: services/frontend/Dockerfile
+    env_file: .env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - api
