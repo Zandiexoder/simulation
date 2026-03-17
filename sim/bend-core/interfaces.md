@@ -1,21 +1,59 @@
-# Bend Interface Contracts
+# Bend Interface Contracts (Phase 5 Prep)
 
-## score_agents(batch)
-Input: contiguous arrays of needs/perception features.
-Output: action utility matrix.
+This document defines **candidate heavy-kernel boundaries** for incremental Bend migration.
+Python remains orchestration/control plane.
 
-## propagate_influence(graph, signals)
-Input: adjacency + scalar/vector signals.
-Output: updated influence signals.
+## Candidate kernel 1: score_agents(batch)
+Input:
+- contiguous arrays of needs/perception/trait features
+- deterministic seed stream offsets
+Output:
+- action utility matrix per agent
+- optional top-k action ids
 
-## clear_market(offers, bids)
-Input: batched supply/demand book.
-Output: clearing prices and allocation vectors.
+## Candidate kernel 2: migration_score(batch)
+Input:
+- agent-city feature matrix
+- city pressure vectors
+Output:
+- migration score vectors
+- selected target indices
 
-## regional_update(regions)
-Input: region state vectors.
-Output: next-step region vectors.
+## Candidate kernel 3: propagate_influence(graph, signals)
+Input:
+- compressed adjacency lists
+- node signal vectors
+Output:
+- updated influence vectors
 
-## aggregate_metrics(values)
-Input: distributed partial metrics.
-Output: deterministic reduced metrics.
+## Candidate kernel 4: conflict_score(batch)
+Input:
+- legitimacy/intelligence/urban pressure vectors
+Output:
+- incident risk vectors
+
+## Candidate kernel 5: org_influence_aggregate(members, stabilities)
+Input:
+- member ids + stability weights
+Output:
+- normalized influence map + bloc candidates
+
+## Candidate kernel 6: aggregate_metrics(values)
+Input:
+- partial metric vectors
+Output:
+- deterministic reduced metrics
+
+---
+
+## Data layout expectations
+- Prefer structure-of-arrays (SoA) for dense numeric kernels.
+- Stable deterministic ordering by entity id index maps.
+- Explicit seed offset contract passed from Python scheduler.
+
+## What remains in Python
+- service integration and retries
+- model calls and degraded fallbacks
+- scenario/tuning application
+- persistence/snapshot/replay management
+- operator API/frontend workflows

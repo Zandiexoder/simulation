@@ -27,16 +27,17 @@
 
     <main class="main">
       <aside class="rail">
-        <div class="rail-group">
-          <div class="rail-label">Modes</div>
+        <div class="rail-group rail-group-mode">
+          <div class="rail-label">MODES</div>
           <button class="rail-btn active" title="World">🌐</button>
           <button class="rail-btn" title="Nations">🏛️</button>
           <button class="rail-btn" title="Cities">🏙️</button>
           <button class="rail-btn" title="Agents">👤</button>
           <button class="rail-btn" title="Economy">💹</button>
         </div>
-        <div class="rail-group">
-          <div class="rail-label">Overlays</div>
+        <div class="rail-sep"></div>
+        <div class="rail-group rail-group-overlay">
+          <div class="rail-label">OVERLAYS</div>
           <button class="rail-btn" title="Intelligence">🛰️</button>
           <button class="rail-btn" title="Conflict">🛡️</button>
           <button class="rail-btn" title="Timeline">🕒</button>
@@ -46,19 +47,27 @@
 
       <section class="map-zone">
         <div class="map-toolbar">
-          <select id="overlaySelect">
-            <option value="terrain">terrain</option>
-            <option value="population">population density</option>
-            <option value="migration">migration corridors</option>
-            <option value="trade">trade corridors</option>
-            <option value="legitimacy">legitimacy</option>
-            <option value="intel">intelligence confidence</option>
-            <option value="conflict">conflict risk</option>
-            <option value="climate">climate stress</option>
-            <option value="resources">resource richness</option>
-            <option value="urban">urban growth pressure</option>
-          </select>
-          <button class="btn" onclick="uiAction('step')">refresh tick</button>
+          <div class="toolbar-group">
+            <div class="group-label">Simulation</div>
+            <button class="btn btn-sm" onclick="uiAction('step')">Tick +1</button>
+            <button class="btn btn-sm" onclick="uiAction('speed')">x4</button>
+          </div>
+          <div class="toolbar-group">
+            <div class="group-label">Map Overlay</div>
+            <select id="overlaySelect" class="overlay-select">
+              <option value="terrain">terrain</option>
+              <option value="population">population density</option>
+              <option value="migration">migration corridors</option>
+              <option value="trade">trade corridors</option>
+              <option value="legitimacy">legitimacy</option>
+              <option value="intel">intelligence confidence</option>
+              <option value="conflict">conflict risk</option>
+              <option value="climate">climate stress</option>
+              <option value="resources">resource richness</option>
+              <option value="urban">urban growth pressure</option>
+            </select>
+            <span class="overlay-pill" id="overlayPill">terrain</span>
+          </div>
         </div>
         <div class="map-canvas" id="mapCanvas"></div>
         <div class="map-legend" id="mapLegend"></div>
@@ -71,6 +80,8 @@
           <button class="btn" data-inspector="nation">Nation</button>
           <button class="btn" data-inspector="city">City</button>
           <button class="btn" data-inspector="agent">Agent</button>
+          <button class="btn" data-inspector="org">Org</button>
+          <button class="btn" data-inspector="news">News</button>
         </div>
         <div class="inspector-body" id="inspectorBody"><div class="skeleton">Loading inspector…</div></div>
       </aside>
@@ -84,8 +95,12 @@
         <button class="btn dock-tab" data-tab="intel">Intel</button>
         <button class="btn dock-tab" data-tab="timeline">Timeline</button>
         <button class="btn dock-tab" data-tab="conflict">Conflict</button>
+        <button class="btn dock-tab" data-tab="diplomacy">Diplomacy</button>
+        <button class="btn dock-tab" data-tab="organizations">Organizations</button>
+        <button class="btn dock-tab" data-tab="news">News</button>
+        <button class="btn dock-tab" data-tab="press">Press / Media</button>
         <button class="btn dock-tab" data-tab="gm">GM Briefings</button>
-        <div class="notice info">Operator dock: click tabs for focused views</div>
+        <div class="notice info dock-note">Operator dock: click tabs for focused views</div>
       </div>
       <div class="dock-content" id="dockContent">
         <div class="skeleton">Loading operational feed…</div>

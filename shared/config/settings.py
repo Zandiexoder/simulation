@@ -8,9 +8,10 @@ class Settings(BaseSettings):
     naming_service_url: str = "http://localhost:8020"
 
     ollama_base_url: str = "http://localhost:11434"
-    ollama_model_naming: str = "qwen3:0.6b"
-    ollama_model_people: str = "qwen3:4b"
-    ollama_model_gm: str = "qwen3:14b"
+    ollama_model_naming: str = "qwen3.5:0.8b"
+    ollama_model_people: str = "qwen3.5:4b"
+    ollama_model_gm: str = "qwen3.5:9b"
+    ollama_model_analysis: str = "qwen3.5:1.5b"
     ollama_timeout: int = 20
     ollama_retries: int = 2
 
@@ -21,6 +22,11 @@ class Settings(BaseSettings):
     scheduler_default_speed: int = 1
     scheduler_snapshot_interval: int = 10
     admin_debug_mode: bool = False
+
+    scenario_default: str = "default"
+    snapshot_dir: str = "./data/snapshots"
+    history_event_retention: int = 5000
+    diagnostics_warning_retention: int = 200
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

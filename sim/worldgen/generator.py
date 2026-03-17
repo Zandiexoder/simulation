@@ -2,10 +2,68 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import random
-from typing import List
 
 
-CULTURES = ["northern", "eastern", "desert", "islander", "industrial", "frontier"]
+@dataclass(frozen=True, slots=True)
+class CultureDefinition:
+    culture_id: str
+    language_style: str
+    traits: list[str]
+    influences: list[str]
+    naming_style: str
+    historical_flavor_tags: list[str]
+
+
+CULTURE_DEFINITIONS: dict[str, CultureDefinition] = {
+    "northern": CultureDefinition(
+        culture_id="northern",
+        language_style="clipped consonants, compound family names",
+        traits=["cold-adapted", "communal", "frontier-discipline"],
+        influences=["highland confederations", "seasonal scarcity"],
+        naming_style="sturdy, consonant-forward, honorific surnames",
+        historical_flavor_tags=["frontier settlements", "mountain pacts"],
+    ),
+    "eastern": CultureDefinition(
+        culture_id="eastern",
+        language_style="syllabic cadence with short honorific particles",
+        traits=["bureaucratic", "mercantile", "scholarly"],
+        influences=["court archives", "river commerce"],
+        naming_style="balanced syllables, formal institution names",
+        historical_flavor_tags=["dynastic reforms", "canal leagues"],
+    ),
+    "desert": CultureDefinition(
+        culture_id="desert",
+        language_style="vowel-long patterns with lineage markers",
+        traits=["nomadic memory", "caravan trade", "ritual law"],
+        influences=["oasis routes", "sacred sites"],
+        naming_style="vowel-rich, lineage-aware, poetic place names",
+        historical_flavor_tags=["caravan empires", "dune truces"],
+    ),
+    "islander": CultureDefinition(
+        culture_id="islander",
+        language_style="open vowels and repeated liquid sounds",
+        traits=["maritime", "cosmopolitan", "guild-oriented"],
+        influences=["port cities", "trade leagues"],
+        naming_style="fluid, wave-like compounds, trade-influenced",
+        historical_flavor_tags=["thalassocracy", "harbor republics"],
+    ),
+    "industrial": CultureDefinition(
+        culture_id="industrial",
+        language_style="mixed loanwords, short practical compounds",
+        traits=["urban", "institutional", "technocratic"],
+        influences=["factory belts", "mass migration"],
+        naming_style="concise, administrative, modern hybrids",
+        historical_flavor_tags=["labor movements", "reconstruction eras"],
+    ),
+    "frontier": CultureDefinition(
+        culture_id="frontier",
+        language_style="rugged dialect blends with clipped endings",
+        traits=["self-reliant", "militarized", "extractive"],
+        influences=["border conflicts", "resource rushes"],
+        naming_style="hard syllables, commemorative compounds",
+        historical_flavor_tags=["buffer wars", "settler waves"],
+    ),
+}
 
 
 @dataclass(slots=True)
@@ -25,7 +83,21 @@ class Cell:
 class WorldMap:
     width: int
     height: int
-    cells: List[Cell]
+    cells: list[Cell]
+
+
+def get_culture_definitions() -> list[dict]:
+    return [
+        {
+            "culture_id": c.culture_id,
+            "language_style": c.language_style,
+            "traits": c.traits,
+            "influences": c.influences,
+            "naming_style": c.naming_style,
+            "historical_flavor_tags": c.historical_flavor_tags,
+        }
+        for c in CULTURE_DEFINITIONS.values()
+    ]
 
 
 def _noise(rng: random.Random, base: float = 0.0, scale: float = 1.0) -> float:
@@ -98,6 +170,8 @@ def seed_settlements(world: WorldMap, n_cities: int = 12) -> list[dict]:
     sorted_cells = sorted((c for c in world.cells if c.biome != "ocean"), key=lambda c: c.habitability, reverse=True)
     cities: list[dict] = []
     for idx, cell in enumerate(sorted_cells[:n_cities]):
+        culture = cell.culture_region
+        profile = CULTURE_DEFINITIONS[culture]
         cities.append(
             {
                 "id": f"city-{idx}",
@@ -106,19 +180,34 @@ def seed_settlements(world: WorldMap, n_cities: int = 12) -> list[dict]:
                 "y": cell.y,
                 "population": int(cell.population_capacity * 0.5),
                 "nation_id": f"nation-{idx % 4}",
-                "culture": cell.culture_region,
+                "culture": culture,
+                "culture_profile": {
+                    "language_style": profile.language_style,
+                    "naming_style": profile.naming_style,
+                    "historical_flavor_tags": profile.historical_flavor_tags,
+                },
             }
         )
     return cities
 
 
 def seed_nations(count: int = 4) -> list[dict]:
-    return [
-        {
-            "id": f"nation-{i}",
-            "name": f"Nation {i}",
-            "stability": 0.6 + 0.1 * (i % 3),
-            "culture": CULTURES[i % len(CULTURES)],
-        }
-        for i in range(count)
-    ]
+    culture_ids = list(CULTURE_DEFINITIONS.keys())
+    out: list[dict] = []
+    for i in range(count):
+        culture = culture_ids[i % len(culture_ids)]
+        profile = CULTURE_DEFINITIONS[culture]
+        out.append(
+            {
+                "id": f"nation-{i}",
+                "name": f"Nation {i}",
+                "stability": 0.6 + 0.1 * (i % 3),
+                "culture": culture,
+                "culture_profile": {
+                    "traits": profile.traits,
+                    "influences": profile.influences,
+                    "historical_flavor_tags": profile.historical_flavor_tags,
+                },
+            }
+        )
+    return out

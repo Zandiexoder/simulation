@@ -18,6 +18,8 @@
   - `/urban`
   - `/politics`
   - `/intelligence`
+  - `/international`
+  - `/media`
   - `/conflict`
   - `/history`
   - `/scheduler`

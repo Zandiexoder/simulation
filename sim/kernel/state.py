@@ -5,13 +5,18 @@ from typing import Any
 
 from sim.conflict import ConflictSystem
 from sim.economy import EconomySystem
+from sim.emergence import EmergenceSystem
 from sim.history import HistorySystem
 from sim.households import HouseholdSystem
+from sim.causality import CausalitySystem
 from sim.intelligence import IntelligenceSystem
+from sim.international import InternationalSystem
+from sim.media import MediaSystem
 from sim.migration import MigrationSystem
 from sim.politics import PoliticsSystem
 from sim.social import SocialGraph
 from sim.urban import UrbanSystem
+from sim.tuning import TuningConfig
 
 
 @dataclass(slots=True)
@@ -52,7 +57,15 @@ class SimulationState:
     urban: UrbanSystem = field(default_factory=UrbanSystem)
     politics: PoliticsSystem = field(default_factory=PoliticsSystem)
     intelligence: IntelligenceSystem = field(default_factory=IntelligenceSystem)
+    international: InternationalSystem = field(default_factory=InternationalSystem)
+    media: MediaSystem = field(default_factory=MediaSystem)
     conflict: ConflictSystem = field(default_factory=ConflictSystem)
     history: HistorySystem = field(default_factory=HistorySystem)
+    causality: CausalitySystem = field(default_factory=CausalitySystem)
+    emergence: EmergenceSystem = field(default_factory=EmergenceSystem)
 
     narratives: dict[str, Any] = field(default_factory=dict)
+    scenario_name: str = "default"
+    tuning: TuningConfig = field(default_factory=TuningConfig)
+    run_metadata: dict[str, Any] = field(default_factory=dict)
+    diagnostics: dict[str, Any] = field(default_factory=lambda: {"perf": {}, "counters": {}, "warnings": []})

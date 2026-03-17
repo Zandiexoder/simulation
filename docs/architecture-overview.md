@@ -32,3 +32,9 @@ History stores:
 - periodic snapshots
 - tick-compare deltas
 - replay windows for timeline browsing
+
+
+## Additional emergent institutions
+
+- Emergent international organizations form from diplomacy/crisis dynamics (not hardcoded fixtures).
+- Media/newspaper artifacts are generated from public/observable signals and persisted in history for replay.
